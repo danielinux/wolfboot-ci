@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       image:
-        description: 'Image to build (all, base, arm, sim, powerpc, riscv, aarch64, x86, renode)'
+        description: 'Image to build (all, base, arm, sim, m33mu, powerpc, riscv, aarch64, x86, renode)'
         required: false
         default: 'all'
 
@@ -103,6 +103,34 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-sim:${{ github.ref_name }}
             ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-sim:latest
+
+  m33mu:
+    if: >-
+      github.event_name == 'push' ||
+      github.event.inputs.image == 'all' ||
+      github.event.inputs.image == 'm33mu'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+
+      - name: Build and push m33mu
+        uses: docker/build-push-action@v6
+        with:
+          context: m33mu
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-m33mu:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-m33mu:latest
 
   powerpc:
     needs: base

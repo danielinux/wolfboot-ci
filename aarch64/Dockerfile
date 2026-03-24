@@ -1,6 +1,6 @@
 # wolfboot-ci-aarch64: Bare-metal AArch64 cross-compilation for wolfBoot CI
 ARG BASE_TAG=latest
-FROM ghcr.io/danielinux/wolfboot-ci-base:${BASE_TAG}
+FROM ghcr.io/wolfssl/wolfboot-ci-base:${BASE_TAG}
 
 ENV DEBIAN_FRONTEND=noninteractive
 

@@ -34,7 +34,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/danielinux/wolfboot-ci-arm:latest
+      image: ghcr.io/wolfssl/wolfboot-ci-arm:latest
     steps:
       - uses: actions/checkout@v4
         with:

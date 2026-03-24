@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libstdc++-arm-none-eabi-dev \
     libstdc++-arm-none-eabi-newlib \
     gcc-aarch64-linux-gnu \
+    libc6-dev-arm64-cross \
     gnu-efi \
     clang llvm \
     check \

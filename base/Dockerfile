@@ -8,8 +8,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git build-essential pkg-config \
     cmake ninja-build \
     python3 python3-pip python3-venv python3-full python-is-python3 \
+    bash \
     libwolfssl-dev \
     && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+    && apt-get clean \
+    && ln -sf /bin/bash /bin/sh
 
 WORKDIR /workspace

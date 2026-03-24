@@ -1,0 +1,223 @@
+name: Build and Publish CI Images
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      image:
+        description: 'Image to build (all, base, arm, sim, riscv, aarch64, x86, renode)'
+        required: false
+        default: 'all'
+
+env:
+  REGISTRY: ghcr.io
+  OWNER: ${{ github.repository_owner }}
+
+jobs:
+  base:
+    if: >-
+      github.event_name == 'push' ||
+      github.event.inputs.image == 'all' ||
+      github.event.inputs.image == 'base'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push base
+        uses: docker/build-push-action@v6
+        with:
+          context: base
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-base:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-base:latest
+
+  arm:
+    needs: base
+    if: >-
+      github.event_name == 'push' ||
+      github.event.inputs.image == 'all' ||
+      github.event.inputs.image == 'arm'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push arm
+        uses: docker/build-push-action@v6
+        with:
+          context: arm
+          push: true
+          build-args: BASE_TAG=${{ github.ref_name }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-arm:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-arm:latest
+
+  sim:
+    needs: base
+    if: >-
+      github.event_name == 'push' ||
+      github.event.inputs.image == 'all' ||
+      github.event.inputs.image == 'sim'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push sim
+        uses: docker/build-push-action@v6
+        with:
+          context: sim
+          push: true
+          build-args: BASE_TAG=${{ github.ref_name }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-sim:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-sim:latest
+
+  riscv:
+    needs: base
+    if: >-
+      github.event_name == 'push' ||
+      github.event.inputs.image == 'all' ||
+      github.event.inputs.image == 'riscv'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push riscv
+        uses: docker/build-push-action@v6
+        with:
+          context: riscv
+          push: true
+          build-args: BASE_TAG=${{ github.ref_name }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-riscv:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-riscv:latest
+
+  aarch64:
+    needs: base
+    if: >-
+      github.event_name == 'push' ||
+      github.event.inputs.image == 'all' ||
+      github.event.inputs.image == 'aarch64'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push aarch64
+        uses: docker/build-push-action@v6
+        with:
+          context: aarch64
+          push: true
+          build-args: BASE_TAG=${{ github.ref_name }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-aarch64:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-aarch64:latest
+
+  x86:
+    needs: base
+    if: >-
+      github.event_name == 'push' ||
+      github.event.inputs.image == 'all' ||
+      github.event.inputs.image == 'x86'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push x86
+        uses: docker/build-push-action@v6
+        with:
+          context: x86
+          push: true
+          build-args: BASE_TAG=${{ github.ref_name }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-x86:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-x86:latest
+
+  renode:
+    if: >-
+      github.event_name == 'push' ||
+      github.event.inputs.image == 'all' ||
+      github.event.inputs.image == 'renode'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push renode
+        uses: docker/build-push-action@v6
+        with:
+          context: renode
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-renode:${{ github.ref_name }}
+            ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-renode:latest

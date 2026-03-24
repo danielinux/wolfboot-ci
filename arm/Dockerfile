@@ -9,7 +9,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     binutils-arm-none-eabi \
     libstdc++-arm-none-eabi-dev \
     libstdc++-arm-none-eabi-newlib \
-    gcc-powerpc-linux-gnu \
     gcc-aarch64-linux-gnu \
     gnu-efi \
     clang llvm \

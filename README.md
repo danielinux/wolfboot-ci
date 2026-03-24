@@ -10,7 +10,8 @@ All images use Devuan testing as the base (except renode).
 | Image | Purpose | Base |
 |-------|---------|------|
 | `wolfboot-ci-base` | Shared foundation: build-essential, cmake, ninja, python3, libwolfssl-dev | devuan:testing |
-| `wolfboot-ci-arm` | ARM cross-compilation: arm-none-eabi-gcc, powerpc, aarch64-linux-gnu, clang | base |
+| `wolfboot-ci-arm` | ARM cross-compilation: arm-none-eabi-gcc, aarch64-linux-gnu, clang | base |
+| `wolfboot-ci-powerpc` | PowerPC cross-compilation: powerpc-linux-gnu-gcc | base |
 | `wolfboot-ci-sim` | Host simulator tests: 32-bit libc, libcheck | base |
 | `wolfboot-ci-riscv` | RISC-V: xPack GCC + freedom-e-sdk | base |
 | `wolfboot-ci-aarch64` | Bare-metal AArch64: aarch64-none-elf toolchain | base |

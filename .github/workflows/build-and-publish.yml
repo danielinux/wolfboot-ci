@@ -128,6 +128,8 @@ jobs:
         with:
           context: m33mu
           push: true
+          pull: true
+          no-cache: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-m33mu:${{ github.ref_name }}
             ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-m33mu:latest

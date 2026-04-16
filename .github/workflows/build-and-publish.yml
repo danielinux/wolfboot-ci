@@ -255,6 +255,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-x86:latest
 
   renode:
+    needs: base
     if: >-
       github.event_name == 'push' ||
       github.event.inputs.image == 'all' ||
@@ -278,6 +279,7 @@ jobs:
         with:
           context: renode
           push: true
+          build-args: BASE_TAG=${{ github.ref_name }}
           tags: |
             ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-renode:${{ github.ref_name }}
             ${{ env.REGISTRY }}/${{ env.OWNER }}/wolfboot-ci-renode:latest
